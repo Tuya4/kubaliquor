@@ -1,0 +1,61 @@
+<section class="vh-100">
+  <div class="container-fluid h-custom">
+    <div class="rowd d-flex justify-content-center align-items-center h-100">
+      <div class="col-md-9 col-lg-6 col-xl-5">
+        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+          class="img-fluid" alt="Sample image">
+      </div>
+      <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+      <!-- <div class="card"> -->
+        <div class="text-center">
+          <h1>Signup</h1>
+          <h4>Register Yourself</h4>
+        </div>
+        <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+          <div class="form-outline mb-4">
+              <!-- <label for="userName" class="form-label">UserName</label> -->
+              <input formControlName="userName" type="text" class="form-control" id="UserName" placeholder="UserName">
+              <div *ngIf="signupForm.controls['userName'].invalid && signupForm.controls['userName'].touched" class="error">
+                Please enter a username.
+              </div>
+          </div>
+          <div class="form-outline mb-4">
+              <!-- <label for="FullName" class="form-label">Full Name</label> -->
+              <input formControlName="fullName" type="text" class="form-control" id="FullName" placeholder="FullName">
+              <div *ngIf="signupForm.controls['fullName'].invalid && signupForm.controls['fullName'].touched" class="error">
+                Please enter your full name.
+              </div>
+          </div>
+          <div class="form-outline mb-4">
+            <!-- <label for="Email" class="form-label">Email</label> -->
+            <input formControlName="email" type="email" class="form-control" id="email" aria-describedby="email"
+            placeholder="Email Address" ngModel required>
+            <div *ngIf="signupForm.controls['email'].invalid && signupForm.controls['email'].touched" class="error">
+              Please enter a valid email.
+            </div>
+          </div>
+          <div class="mb-3">
+              <!-- <label for="password" class="form-label">Password</label> -->
+              <input formControlName="password" type="password" class="form-control" id="password" placeholder="Password">
+              <div *ngIf="signupForm.controls['password'].invalid && signupForm.controls['password'].touched" class="error">
+                Please enter a password with at least 6 characters.
+              </div>
+
+              <div id="password" class="form-text">We'll never share your Password with anyone else.</div>
+          </div>
+          <div class="mb-3">
+            <!-- <label for="confirmPassword" class="form-label">Confirm Password</label> -->
+            <input formControlName="confirmPassword" type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password">
+            <div *ngIf="signupForm.controls['confirmPassword'].invalid && signupForm.controls['confirmPassword'].touched" class="error">
+              Please confirm your password.
+            </div>
+            <div id="confirmPassword" class="form-text">Repeat Your Password Here.</div>
+          </div>
+            <button type="submit" class="btn btn-primary mb-2" [disabled]="signupForm.invalid">Sign Up</button>
+        </form>
+        <p>Already have an account?<a style="color: #fff;margin-top:10px" routerLink="/login" class="link-danger"> Login.</a>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- </div> -->

@@ -1,0 +1,25 @@
+<table>
+  <thead>
+    <tr>
+      <th>Product Name</th>
+      <th>Orders</th>
+      <th>Unit Price</th>
+      <th>Total Cost</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let product of products">
+      <td>{{ product.productname }}</td>
+      <td>{{ product.orders }}</td>
+      <td>{{ product.price }}</td>
+      <td>{{ product.orders * product.price }}</td>
+      <td>
+        <button *ngIf="!product.completed" (click)="completeOrder(product)">Completed</button>
+        <span *ngIf="product.completed">Completed</span>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+

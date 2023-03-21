@@ -1,0 +1,525 @@
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+  <div class="container-fluid">
+    <div class="nav-header">
+      <a class="navbar-brand" href="#">Kubaliquor Stores</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="navbar-nav">
+        <a class="nav-link" routerLink="/login" routerLinkActive="active">Login</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="container">
+  <div class="button-container">
+    <button class="home-button" (click)="goToDashboard()">Home</button>
+    <button class="logout-button"(click)="logout()">Logout</button>
+  </div>
+  <h1>Products</h1>
+  <button class="btn btn-lg btn-outline-primary" (click)="open(content)">New Product</button>
+  <button (click)="goBack()">Home</button>
+  <table>
+    <thead>
+      <tr>
+        <th>Product Name</th>
+        <th>Description</th>
+        <th>Unit Price</th>
+        <th>Quantity</th>
+        <th>Total Cost</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of products">
+        <td>{{product.productName}}</td>
+        <td>{{product.description}}</td>
+        <td>{{product.unitPrice}}</td>
+        <td>{{product.quantity}}</td>
+        <td>{{product.unitPrice * product.stock}}</td>
+        <td>
+          <!-- <button class="description-button" (click)="showDescription(product)">Description</button> -->
+          <button class="edit-button" (click)="editProductOpen(contents,product)">Edit</button>
+          <button class="delete-button"(click)="deleteProductOpen(product.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+<ng-template #content let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title" id="modal-basic-title">New Product</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+    <form [formGroup]="addProductForm">
+      <div class="form-group">
+        <label for="productName">Product Name</label>
+        <div class="input-group">
+          <input type="text" id="productName" formControlName="productName" class="form-control" #required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="description">Description</label>
+        <div class="input-group">
+          <textarea id="description" formControlName="description" class="form-control"></textarea>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="unitPrice">Unit Price</label>
+        <div class="input-group">
+          <input type="number" id="unitPrice" formControlName="unitPrice" class="form-control">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="quantity">Quantity</label>
+        <div class="input-group">
+          <input type="number" id="quantity" formControlName="quantity" class="form-control">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" [disabled]="addProductForm.invalid" (click)="modal.dismiss('Cross click')" (click)="onAddSubmit()">Save</button>
+      </div>
+    </form>
+	</div>
+</ng-template>
+
+
+<ng-template #contents let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title" id="modal-basic-title">Update Product</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+    <form [formGroup]="editProductForm" >
+      <div class="form-group">
+        <label for="productName">Product Name</label>
+        <div class="input-group">
+          <input type="text" id="productName" formControlName="productName" >
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="description">Description</label>
+        <div class="input-group">
+          <textarea id="description" formControlName="description" ></textarea>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="unitPrice">Unit Price</label>
+        <div class="input-group">
+          <input type="number" id="unitPrice" formControlName="unitPrice" >
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="quantity">Quantity</label>
+        <div class="input-group">
+          <input type="number" id="quantity" formControlName="quantity" >
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" [disabled]="editProductForm.invalid" (click)="modal.close('Cross click')" (click)="onEditSubmit()">Update</button>
+      </div>
+    </form>
+	</div>
+</ng-template>
+
+
+
+<!-- <ng-template #deleteModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Confirm Deletion</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    Are you sure you want to delete {{ selectedProduct.productName }}?
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="modal.close()">Delete</button>
+  </div>
+</ng-template> -->
+
+<ng-template #cont let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Delete Product</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to delete "{{ selectedProduct.productName }}"?</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="modal.close()" (click)="onDelete()">Delete</button>
+  </div>
+</ng-template>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div class="container">
+<h1>Products</h1> -->
+
+
+<!-- <button (click)="showForm()">New Product</button>
+<div *ngIf="formVisible">
+  <form  (ngSubmit)="onSubmit()">
+    <div>
+      <label for="productName">Product Name:</label>
+      <input type="text" name="name" [(ngModel)]="newProduct.productName" required>
+    </div>
+    <div>
+      <label for="description">Description:</label>
+      <input type="text" name="description" [(ngModel)]="newProduct.description" required>
+    </div>
+    <div>
+      <label for="price">Price:</label>
+      <input type="number" name="price" [(ngModel)]="newProduct.price" required>
+    </div>
+    <div>
+      <label for="stock">Stock:</label>
+      <input type="number" name="stock" [(ngModel)]="newProduct.stock" required>
+    </div>
+    <button type="submit">Add Product</button>
+
+  </form> -->
+
+  <!-- <button class="btn btn-md btn-outline-primary" (click)="showForm(content)">New Product</button> -->
+
+
+
+
+  <!-- <button class="btn btn-md btn-outline-primary" (click)="open(content)">New Product</button> -->
+
+  <!-- <div *ngIf="formVisible"> -->
+   <!-- <form (ngSubmit)="onSubmit()" #productData="ngForm">
+    <div>
+      <label for="productName">Product Name:</label>
+      <input type="text" name="name" required [(ngModel)]="newProduct.productName" >
+    </div>
+    <div>
+      <label for="description">Description:</label>
+      <input type="text" name="description" required [(ngModel)]="newProduct.description" >
+    </div>
+    <div>
+      <label for="price">Unit Price:</label>
+      <input type="number" name="unitPrice" required [(ngModel)]="newProduct.unitPrice">
+    </div>
+    <div>
+      <label for="stock">Stock:</label>
+      <input type="number" name="stock" required [(ngModel)]="newProduct.stock" >
+    </div>
+    <div>
+      <label for="stock">Total Cost:</label>
+      <input type="number" name="stock" required [(ngModel)]="newProduct.totalCost" >
+    </div>
+    <button type="submit" [disabled]="productData.invalid">Save</button>
+  </form> -->
+<!-- </div> -->
+
+<!-- <div class="container" *ngIf="selectedProduct" > -->
+  <!-- <h2>{{ isEditing ? 'Edit' : 'Product Details' }}</h2>
+  <form *ngIf="isEditing" (submit)="editProduct(productName.value, description.value, unitPrice.value, stock.value, totalCost.value)">
+    <div class="form-group">
+      <label for="productName">Product Name:</label>
+      <input type="text" class="form-control" id="productName" name="productName" [(ngModel)]="selectedProduct.productName" #productName required>
+    </div>
+    <div class="form-group">
+      <label for="description">Description:</label>
+      <textarea class="form-control" id="description" name="description" [(ngModel)]="selectedProduct.description" #description required></textarea>
+    </div>
+    <div class="form-group">
+      <label for="unitPrice">Unit Price:</label>
+      <input type="number" class="form-control" id="unitPrice" name="unitPrice" [(ngModel)]="selectedProduct.unitPrice" #unitPrice required>
+    </div>
+    <div class="form-group">
+      <label for="stock">Stock:</label>
+      <input type="number" class="form-control" id="stock" name="stock" [(ngModel)]="selectedProduct.stock" #stock required>
+    </div>
+    <div class="form-group">
+      <label for="stock">Total Cost:</label>
+      <input type="number" class="form-control" id="totalCost" name="totalCost" [(ngModel)]="selectedProduct.totalCost" #totalCost required>
+    </div>
+    <button type="submit" class="btn btn-primary"(click)='save()'>Update</button>
+    <button type="button" class="btn btn-default" (click)="isEditing = false">Cancel</button>
+  </form>
+  <div *ngIf="!isEditing">
+    <p><strong>Product Name:</strong> {{ selectedProduct.productName }}</p>
+    <p><strong>Description:</strong> {{ selectedProduct.description }}</p>
+    <p><strong>Unit Price:</strong> {{ selectedProduct.unitPrice }}</p>
+    <p><strong>Stock:</strong> {{ selectedProduct.stock }}</p>
+    <p><strong>Total Cost:</strong> {{ selectedProduct.totalCost }}</p>
+  </div> -->
+
+<!-- </div> -->
+
+
+
+<!-- <div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Product Name</th>
+      <th>Description</th>
+      <th>Unit Price</th>
+      <th>Stock</th>
+      <th>Total Cost</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let product of products">
+      <td>{{ product.productName }}</td>
+      <td>{{ product.description }}</td>
+      <td>{{ product.unitPrice }}</td>
+      <td>{{ product.stock }}</td>
+      <td>{{ product.stock * product.unitPrice }}</td>
+      <td>
+
+        <button class="btn btn-primary" (click)="selectProduct(product)">
+          <i class='fa fa-search'></i>Details</button>
+        <button class="btn btn-info" (click)="selectProduct(product); isEditing = true">
+          <i class='fa fa-edit'></i>Edit</button>
+        <button class="btn btn-danger" (click)="selectProduct(product); confirmDeleteProduct(product.id)">
+          <i class='fa fa-remove'></i>Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div> -->
+
+<!-- <ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">New Product</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" >
+    <form [formGroup]="addProductForm">
+      <div class="form-group">
+        <label for="productName">Product Name:</label>
+        <div class="input-group">
+          <input type="text" name="name" class="form-control">
+        </div>
+        <div  class="form-group">
+          <label for="description">Description:</label>
+          <div class="input-group">
+            <input type="text" name="description" class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="price">Unit Price:</label>
+          <input type="number" name="unitPrice" class="form-control">
+        </div>
+        <div  class="form-group">
+          <label for="stock">Stock:</label>
+          <input type="number" name="stock" class="form-control" >
+        </div>
+        <div  class="form-group">
+          <label for="stock">Total Cost:</label>
+          <input type="number" name="stock" class="form-control" >
+        </div>
+      </div>
+      <div class="border text-center">
+        <button data-dismiss="modal" class="btn btn-info">Save</button>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer" class="text-center">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Cancel click')">Cancel</button>
+  </div>
+</ng-template> -->
+
+<!-- <ng-template #contentEdit let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">New Product</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" *ngIf="editProductModal">
+    <form [formGroup]="editProductForm">
+      <div class="form-group">
+        <label for="productName">Product Name:</label>
+        <div class="input-group">
+          <input type="text" name="name" class="form-control">
+        </div>
+        <div  class="form-group">
+          <label for="description">Description:</label>
+          <div class="input-group">
+            <input type="text" name="description" class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="price">Unit Price:</label>
+          <input type="number" name="unitPrice" class="form-control">
+        </div>
+        <div  class="form-group">
+          <label for="stock">Stock:</label>
+          <input type="number" name="stock" class="form-control" >
+        </div>
+        <div  class="form-group">
+          <label for="stock">Total Cost:</label>
+          <input type="number" name="stock" class="form-control" >
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="border text-center">
+    <button data-dismiss="modal" class="btn btn-info">Update</button>
+  </div>
+  <div class="modal-footer" class="text-center">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Cancel click')">Cancel</button>
+  </div>
+</ng-template> -->
+
+
+

@@ -1,0 +1,44 @@
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+  <div class="container-fluid">
+    <div class="nav-header">
+      <a class="navbar-brand" href="#">Kubaliquor Stores</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="navbar-nav">
+        <a class="nav-link" routerLink="/login" routerLinkActive="active">Login</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="container">
+  <button class="home-button" (click)="goToDashboard()">Home</button>
+  <h1>Completed Orders</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Customer Name</th>
+      <th>Product Name</th>
+      <th>Quantity</th>
+      <th>Unit Price</th>
+      <th>Total Cost</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let order of orders">
+    <td>{{ order.customerName }}</td>
+      <td>{{ order.productName }}</td>
+      <td>{{ order.quantity }}</td>
+      <td>{{ order.unitPrice }}</td>
+      <td>{{ order.quantity * order.unitPrice }}</td>
+      <td>Completed</td>
+      <!-- <td>
+        <input type="checkbox" [checked]="order.completed" (change)="updateOrderStatus(order)" />
+        {{ order.completed ? 'Completed' : 'Incomplete' }}
+      </td> -->
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
