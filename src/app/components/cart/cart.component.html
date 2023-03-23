@@ -36,9 +36,48 @@
       </td>
     </tr>
     <p>Total: {{ getTotal() }}</p>
-    <button (click)="orderCart()">Buy</button>
+    <button class="btn btn-lg btn-outline-primary" (click)="open(content)">Buy Now</button>
+    <!-- <button (click)="orderCart()">Buy</button> -->
     <button (click)="clearCart()">Clear</button>
     <button (click)="goBack()">Back</button>
   </tbody>
 </table>
 </div>
+
+<ng-template #content let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title" id="modal-basic-title">Buy Now</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+    <form [formGroup]="buyProductForm">
+      <div class="form-group">
+        <label for="productName">Product Name</label>
+        <div class="input-group">
+          <input type="text" id="productName" formControlName="productName" class="form-control" #required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="description">ShippingAddress</label>
+        <div class="input-group">
+          <textarea id="description" formControlName="shippingAddress" class="form-control"></textarea>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="unitPrice">ShippingDate</label>
+        <div class="input-group">
+          <input type="number" id="unitPrice" formControlName="unitPrice" class="form-control">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="quantity">Quantity</label>
+        <div class="input-group">
+          <input type="number" id="quantity" formControlName="quantity" class="form-control">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" [disabled]="buyProductForm.invalid" (click)="modal.dismiss('Cross click')" (click)="onBuySubmit()">Save</button>
+      </div>
+    </form>
+	</div>
+</ng-template>

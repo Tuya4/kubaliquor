@@ -5,7 +5,7 @@
     </div>
     <ul class="nav navbar-nav">
       <li class="navbar-nav">
-        <a class="nav-link" routerLink="/login" routerLinkActive="active">Login</a>
+        <a class="nav-link" routerLink="/login" routerLinkActive="active">Logout</a>
       </li>
     </ul>
   </div>
@@ -35,7 +35,7 @@
         <td>{{product.description}}</td>
         <td>{{product.unitPrice}}</td>
         <td>{{product.quantity}}</td>
-        <td>{{product.unitPrice * product.stock}}</td>
+        <td>{{product.unitPrice * product.quantity}}</td>
         <td>
           <!-- <button class="description-button" (click)="showDescription(product)">Description</button> -->
           <button class="edit-button" (click)="editProductOpen(contents,product)">Edit</button>
@@ -157,7 +157,7 @@
   </div>
 </ng-template>
 
-
+<!-- <app-loading-spinner *ngIf="isLoading"></app-loading-spinner> -->
 
 
 
